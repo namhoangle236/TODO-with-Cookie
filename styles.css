@@ -38,6 +38,7 @@ body {
     border: none;
     border-radius: 4px;
     cursor: pointer;            /* mouse change to poiting hand! zamn! */
+    margin: 3px;
   }
   
   button:hover {
@@ -62,4 +63,9 @@ body {
     justify-content: space-between;
     align-items: center;
     text-align: start;
+  }
+
+  
+  li span {
+    flex: 1; /* Allow the text to take up remaining space */
   }

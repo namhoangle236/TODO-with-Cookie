@@ -130,6 +130,7 @@ const loadTodos = async () => {
     <li>
       <span>${todo.title} --- ${todo.description}</span>
       <button onclick="deleteTodo('${todo.id}')">Delete</button>
+      <button onclick="editTodos('${todo.id}')">Edit</button>
     </li>
   `).join('');
 };
@@ -157,6 +158,41 @@ if (window.location.pathname === '/index.html' && !token) {
   loadTodos();
 }
 
+
+
+// =================================================== Edit todo ====================================================
+
+window.editTodos = async (id) => {
+  // Prompt the user for new title and description
+  const newTitle = prompt('Enter the new task:');
+  const newDescription = prompt('Enter the new description:');
+
+  // Check if the user entered values (not canceled)
+  if (newTitle !== null && newDescription !== null) {
+    try {
+      const response = await fetch(`${API_URL}/todos/${id}`, {
+        method: 'PUT', // or 'PATCH' depending on backend
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          title: newTitle,
+          description: newDescription,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to update todo');
+      }
+
+      // Reload the todos after successful update
+      loadTodos();
+    } catch (error) {
+      console.error('Error updating todo:', error);
+    }
+  }
+};
 
 
 // self note:

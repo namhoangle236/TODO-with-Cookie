@@ -1,6 +1,7 @@
 // Changes to professor Andrew Wu's original API:
 // - Create todo - line 121
 // - Delete todo - line 168
+// - Update todo - line 152
 
 // Reason:
 // - changed id generation based on todo length to randomize hex in order to prevent wrong deletion
@@ -147,7 +148,10 @@ app.get('/todos', authenticateUser, (req, res) => {
 app.put('/todos/:id', authenticateUser, (req, res) => {
   const token = extractToken(req.headers.authorization);
   const user = findUserByToken(token);
-  const todoId = parseInt(req.params.id);
+
+  // const todoId = parseInt(req.params.id);    // This is a problem!
+  // would not work since it parses the id as an integer, but the id is a string
+  const todoId = req.params.id;
   const { title, description, completed } = req.body;
 
   const todoToUpdate = todos[user.username].find(todo => todo.id === todoId);
